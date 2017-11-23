@@ -1,0 +1,139 @@
+
+# home page cannot be handled in the routes file due to how org.resthub:springmvc-router:1.2.1 works
+# GET     /                                  HomePageController.index
+
+# documentation
+GET     /api/v0/api                        ApiController.readApi
+GET     /api/v0/api/authorization          ApiController.readApiAuthorization
+
+# authentication
+POST    /api/v0/authentication             AuthenticationController.login
+DELETE  /api/v0/authentication             AuthenticationController.logout
+GET     /api/v0/me                         AuthenticationController.readMe
+
+# administrators
+POST    /api/v0/administrators             AdministratorController.create
+GET     /api/v0/administrators             AdministratorController.read
+GET     /api/v0/administrators/{id}        AdministratorController.readById
+PUT     /api/v0/administrators/{id}        AdministratorController.update
+DELETE  /api/v0/administrators/{id}        AdministratorController.delete
+
+# administrator groups roles
+GET     /api/v0/administratorGroups/roles  AdministratorGroupController.getAvailableRoles
+
+# administrator groups
+POST    /api/v0/administratorGroups        AdministratorGroupController.create
+GET     /api/v0/administratorGroups        AdministratorGroupController.read
+GET     /api/v0/administratorGroups/{id}   AdministratorGroupController.readById
+PUT     /api/v0/administratorGroups/{id}   AdministratorGroupController.update
+DELETE  /api/v0/administratorGroups/{id}   AdministratorGroupController.delete
+
+# administrator to administrator group membership
+GET     /api/v0/administrators/{administratorId}/administratorGroups    MembershipController.readAdministrationGroupByAdministratorId
+PUT     /api/v0/administrators/{administratorId}/administratorGroups    MembershipController.updateAdministrationGroupByAdministratorId
+DELETE  /api/v0/administrators/{administratorId}/administratorGroups    MembershipController.deleteAdministrationGroupByAdministratorId
+PUT     /api/v0/administratorGroups/{administratorGroupId}/administrators  MembershipController.updateAdministratorByAdministratorGroupId
+
+# user accounts
+GET     /api/v0/users/types                UserAccountController.getUserAccountTypes
+POST    /api/v0/users                      UserAccountController.create
+GET     /api/v0/users                      UserAccountController.read
+GET     /api/v0/users/{id}                 UserAccountController.readById
+PUT     /api/v0/users/{id}                 UserAccountController.update
+DELETE  /api/v0/users/{id}                 UserAccountController.delete
+
+# cloud accounts
+GET     /api/v0/cloudAccounts/apiTypes     CloudAccountController.getApiTypes
+POST    /api/v0/users/{userId}/cloudAccounts                             CloudAccountController.create
+GET     /api/v0/cloudAccounts                                            CloudAccountController.readAll
+GET     /api/v0/cloudAccounts/{cloudAccountId}                           CloudAccountController.readById
+DELETE  /api/v0/cloudAccounts/{cloudAccountId}                           CloudAccountController.delete
+GET     /api/v0/users/{userId}/cloudAccounts                             CloudAccountController.readByUserId
+GET     /api/v0/users/{userId}/cloudAccounts/{cloudAccountId}            CloudAccountController.readByUserIdAndCloudAccountId
+PUT     /api/v0/users/{userId}/cloudAccounts/{cloudAccountId}            CloudAccountController.update
+# annotated=true is disabled for now since it will affect all devices with given cloud account
+DELETE  /api/v0/users/{userId}/cloudAccounts/{cloudAccountId}            CloudAccountController.deleteAssociation
+
+# homes
+GET     /api/v0/homes                      HomeController.read
+GET     /api/v0/homes/{id}                 HomeController.readById
+GET     /api/v0/users/{id}/homes           HomeController.readByUserAccountId
+PUT     /api/v0/homes/{id}/owner           HomeController.updateOwner
+DELETE  /api/v0/homes/{id}                 HomeController.delete
+
+# home accounts
+POST    /api/v0/homeAccounts                         HomeAccountController.create
+DELETE  /api/v0/homeAccounts/{id}                    HomeAccountController.delete
+GET     /api/v0/homes/{homeId}/homeAccounts/{userId} HomeAccountController.readByHomeIdAndUserId
+GET     /api/v0/homes/{id}/homeAccounts              HomeAccountController.readByHomeId
+PUT     /api/v0/homes/{sourceHomeId}/homeAccounts/{userId}   HomeAccountController.move
+DELETE  /api/v0/homes/{homeId}/users/{userId}        HomeAccountController.deleteByHomeIdAndUserId
+
+# devices
+GET     /api/v0/devices                                                  DeviceController.read
+GET     /api/v0/devices/{id}                                             DeviceController.readById
+GET     /api/v0/cloudAccounts/{cloudAccountId}/devices                   DeviceController.readByCloudAccountId
+DELETE  /api/v0/devices/{id}                                             DeviceController.delete
+
+# device properties
+GET     /api/v0/devices/{deviceId}/properties                            DevicePropertyController.readByDeviceId
+
+# device types
+GET     /api/v0/deviceTypes                DeviceTypeController.read
+GET     /api/v0/deviceTypes/{id}           DeviceTypeController.readById
+POST    /api/v0/deviceTypes                DeviceTypeController.create
+PUT     /api/v0/deviceTypes/{id}           DeviceTypeController.update
+# disabled delete action since it may affect all devices with given device type
+DELETE  /api/v0/deviceTypes/{id}           DeviceTypeController.delete
+
+# device capabilities
+GET     /api/v0/deviceTypes/{deviceTypeId}/deviceCapabilities            DeviceCapabilityController.readByDeviceTypeId
+GET     /api/v0/deviceTypes/{deviceTypeId}/deviceCapabilities/{id}       DeviceCapabilityController.readByDeviceTypeIdAndCapabilityId
+POST    /api/v0/deviceTypes/{deviceTypeId}/deviceCapabilities            DeviceCapabilityController.create
+PUT     /api/v0/deviceTypes/{deviceTypeId}/deviceCapabilities/{id}       DeviceCapabilityController.updateByDeviceTypeId
+DELETE  /api/v0/deviceTypes/{deviceTypeId}/deviceCapabilities/{id}       DeviceCapabilityController.deleteByDeviceTypeId
+GET     /api/v0/deviceCapabilities/comparisonTypes                       DeviceCapabilityController.getComparisonTypes
+GET     /api/v0/deviceCapabilities/{id}                                  DeviceCapabilityController.readById
+PUT     /api/v0/deviceCapabilities/{id}                                  DeviceCapabilityController.update
+DELETE  /api/v0/deviceCapabilities/{id}                                  DeviceCapabilityController.delete
+
+# gateways
+GET     /api/v0/gateways                   GatewayController.read
+GET     /api/v0/gateways/{id}              GatewayController.readById
+GET     /api/v0/homes/{homeId}/gateways    GatewayController.readByHomeId
+GET     /api/v0/users/{userId}/gateways    GatewayController.readByUserId
+DELETE  /api/v0/gateways/{id}              GatewayController.delete
+
+# gateway firmware
+GET     /api/v0/gatewayFirmwares/formats                                 GatewayFirmwareController.getAllowedFormats
+GET     /api/v0/gatewayFirmwares/types/{firmwareType}/active             GatewayFirmwareController.getActiveGatewayFirmware
+GET     /api/v0/gatewayFirmwares/types                                   GatewayFirmwareController.getGatewayFirmwareTypes
+POST    /api/v0/gatewayFirmwares                                         GatewayFirmwareController.uploadFirmware
+
+# suspended emails
+POST    /api/v0/suspendedEmails            SuspendedEmailController.create
+GET     /api/v0/suspendedEmails            SuspendedEmailController.read
+GET     /api/v0/suspendedEmails/{id}       SuspendedEmailController.readById
+#PUT     /api/v0/suspendedEmails/{id}       SuspendedEmailController.update
+DELETE  /api/v0/suspendedEmails/{id}       SuspendedEmailController.delete
+
+# options
+POST    /api/v0/options                    OptionController.create
+GET     /api/v0/options                    OptionController.read
+GET     /api/v0/options/{id}               OptionController.readById
+PUT     /api/v0/options/{id}               OptionController.update
+DELETE  /api/v0/options/{id}               OptionController.delete
+GET     /api/v0/optionsBundle              OptionController.readOptionsBundle
+GET     /api/v0/optionsBundle/{prefix}     OptionController.readOptionsBundleByPrefix
+PUT     /api/v0/optionsBundle              OptionController.updateOptionsBundle
+PUT     /api/v0/optionsBundle/{prefix}     OptionController.updateOptionsBundleByPrefix
+
+# properties
+GET     /api/v0/properties                 PropertyController.read
+GET     /api/v0/properties/{key}           PropertyController.readByKey
+GET     /api/v0/propertiesBundle           PropertyController.readPropertiesBundle
+GET     /api/v0/propertiesBundle/{prefix}  PropertyController.readPropertiesBundleByPrefix
+
+# jobs
+GET     /api/v0/jobs                       JobController.getAll
+PUT     /api/v0/jobs/{name}                JobController.trigger
